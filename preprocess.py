@@ -43,10 +43,16 @@ class DataPreprocessor:
         Crime2024 = Crime2024[1:]
 
         # Rename "Offense Type" column to "CITY" in all crime dataframes
-        for year in range(2015,2025):
-            locals()[f"Crime{year}"] = locals()[f"Crime{year}"].rename(
-                columns={"Offense Type": "CITY"}
-            )
+        Crime2015 = Crime2015.rename(columns={"Offense Type": "CITY"})
+        Crime2016 = Crime2016.rename(columns={"Offense Type": "CITY"})
+        Crime2017 = Crime2017.rename(columns={"Offense Type": "CITY"})
+        Crime2018 = Crime2018.rename(columns={"Offense Type": "CITY"})
+        Crime2019 = Crime2019.rename(columns={"Offense Type": "CITY"})
+        Crime2020 = Crime2020.rename(columns={"Offense Type": "CITY"})
+        Crime2021 = Crime2021.rename(columns={"Offense Type": "CITY"})
+        Crime2022 = Crime2022.rename(columns={"Offense Type": "CITY"})
+        Crime2023 = Crime2023.rename(columns={"Offense Type": "CITY"})
+        Crime2024 = Crime2024.rename(columns={"Offense Type": "CITY"})
 
         # Converting NaN values into actuall null values
         Crime2015 = Crime2015.replace(["", " ", "NaN", "nan", "None"], np.nan)
@@ -99,95 +105,21 @@ class DataPreprocessor:
         Crime2023 = Crime2023.drop(["Missing", "Unnamed: 59"], axis=1)
         Crime2024 = Crime2024.drop(["Missing", "Unnamed: 59"], axis=1)
 
-        Crime2015 = Crime2015.apply(
-            lambda col: col.astype(str)
-                            .str.replace(',', '', regex=False)
-                            .replace('nan', np.nan)
-                            .infer_objects(copy=False)
-                            .astype(float)
-            if col.name != "CITY" else col
-        )
+        def convert_to_float(col):
+            if col.name == "CITY":
+                return col
+            return pd.to_numeric(col.astype(str).str.replace(',', '', regex=False).replace('nan', np.nan), errors='coerce')
 
-        Crime2016 = Crime2016.apply(
-            lambda col: col.astype(str)
-                            .str.replace(',', '', regex=False)
-                            .replace('nan', np.nan)
-                            .infer_objects(copy=False)
-                            .astype(float)
-            if col.name != 'CITY' else col
-        )
-
-        Crime2017 = Crime2017.apply(
-            lambda col: col.astype(str)
-                            .str.replace(',', '', regex=False)
-                            .replace('nan', np.nan)
-                            .infer_objects(copy=False)
-                            .astype(float)
-            if col.name != 'CITY' else col
-        )
-
-        Crime2018 = Crime2018.apply(
-            lambda col: col.astype(str)
-                            .str.replace(',', '', regex=False)
-                            .replace('nan', np.nan)
-                            .infer_objects(copy=False)
-                            .astype(float)
-            if col.name != 'CITY' else col
-        )
-
-        Crime2019 = Crime2019.apply(
-            lambda col: col.astype(str)
-                            .str.replace(',', '', regex=False)
-                            .replace('nan', np.nan)
-                            .infer_objects(copy=False)
-                            .astype(float)
-            if col.name != 'CITY' else col
-        )
-
-        Crime2020 = Crime2020.apply(
-            lambda col: col.astype(str)
-                            .str.replace(',', '', regex=False)
-                            .replace('nan', np.nan)
-                            .infer_objects(copy=False)
-                            .astype(float)
-            if col.name != 'CITY' else col
-        )
-
-        Crime2021 = Crime2021.apply(
-            lambda col: col.astype(str)
-                            .str.replace(',', '', regex=False)
-                            .replace('nan', np.nan)
-                            .infer_objects(copy=False)
-                            .astype(float)
-            if col.name != 'CITY' else col
-        )
-
-        Crime2022 = Crime2022.apply(
-            lambda col: col.astype(str)
-                            .str.replace(',', '', regex=False)
-                            .replace('nan', np.nan)
-                            .infer_objects(copy=False)
-                            .astype(float)
-            if col.name != 'CITY' else col
-        )
-
-        Crime2023 = Crime2023.apply(
-            lambda col: col.astype(str)
-                            .str.replace(',', '', regex=False)
-                            .replace('nan', np.nan)
-                            .infer_objects(copy=False)
-                            .astype(float)
-            if col.name != 'CITY' else col
-        )
-
-        Crime2024 = Crime2024.apply(
-            lambda col: col.astype(str)
-                            .str.replace(',', '', regex=False)
-                            .replace('nan', np.nan)
-                            .infer_objects(copy=False)
-                            .astype(float)
-            if col.name != 'CITY' else col
-        )
+        Crime2015 = Crime2015.apply(convert_to_float, axis=0)
+        Crime2016 = Crime2016.apply(convert_to_float, axis=0)
+        Crime2017 = Crime2017.apply(convert_to_float, axis=0)
+        Crime2018 = Crime2018.apply(convert_to_float, axis=0)
+        Crime2019 = Crime2019.apply(convert_to_float, axis=0)
+        Crime2020 = Crime2020.apply(convert_to_float, axis=0)
+        Crime2021 = Crime2021.apply(convert_to_float, axis=0)
+        Crime2022 = Crime2022.apply(convert_to_float, axis=0)
+        Crime2023 = Crime2023.apply(convert_to_float, axis=0)
+        Crime2024 = Crime2024.apply(convert_to_float, axis=0)
 
 
         # Add year column to each crime dataset
