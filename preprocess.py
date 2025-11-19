@@ -42,11 +42,11 @@ class DataPreprocessor:
         Crime2023 = Crime2023[1:]
         Crime2024 = Crime2024[1:]
 
-        # globals() accesses all global variables in the notebook
-        # and we can access any variable by its name like globals()["Crime2024"]
+        # Rename "Offense Type" column to "CITY" in all crime dataframes
         for year in range(2015,2025):
-            dt = globals()[f"Crime{year}"]
-            dt.rename(columns={"Offense Type": "CITY"}, inplace=True)
+            locals()[f"Crime{year}"] = locals()[f"Crime{year}"].rename(
+                columns={"Offense Type": "CITY"}
+            )
 
         # Converting NaN values into actuall null values
         Crime2015 = Crime2015.replace(["", " ", "NaN", "nan", "None"], np.nan)
